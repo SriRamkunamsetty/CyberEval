@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CyberEval — Cybersecurity AI Evaluation & Benchmark Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>CyberEval</h1>
+        <div class="tagline">Cybersecurity AI Evaluation & Reasoning Benchmark</div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="overview">
+        <span>📊</span> Leaderboard
+      </button>
+      <button class="nav-tab" data-tab="scenarios">
+        <span>🛡️</span> Scenarios
+      </button>
+      <button class="nav-tab" data-tab="evaluation">
+        <span>⚡</span> Run Eval
+      </button>
+      <button class="nav-tab" data-tab="claim-graph">
+        <span>🕸️</span> Claim Graph
+      </button>
+      <button class="nav-tab" data-tab="counterfactual">
+        <span>⚖️</span> Counterfactuals
+      </button>
+      <button class="nav-tab" data-tab="regression">
+        <span>🚦</span> Release Gates
+      </button>
+      <button class="nav-tab" data-tab="review">
+        <span>👥</span> Review & Kappa
+      </button>
+      <button class="nav-tab" data-tab="integrity">
+        <span>🔒</span> Leakage Audit
+      </button>
+    </nav>
+
+    <div class="header-actions">
+      <button class="btn-primary" id="btn-quick-run">
+        <span>▶</span> Launch Run
+      </button>
+    </div>
+  </header>
+
+  <!-- Main View Container -->
+  <main class="container">
+
+    <!-- 1. OVERVIEW & LEADERBOARD TAB -->
+    <section class="tab-pane active" id="pane-overview">
+      <!-- High-level Metric Tiles -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">Benchmark Registry</span>
+          <span class="metric-value" id="stat-scenarios-count">32</span>
+          <span class="metric-subtext">Version 1.0.0 · 8 Core Categories</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Top Model Factual Score</span>
+          <span class="metric-value" id="stat-top-score" style="color: var(--accent-emerald);">94.5%</span>
+          <span class="metric-subtext">Ground Truth Baseline Expert</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Hallucination Trap Gate</span>
+          <span class="metric-value" id="stat-gate-status">ACTIVE</span>
+          <span class="metric-subtext">Strict Zero-Tolerance Policy</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">Inter-Rater Reliability</span>
+          <span class="metric-value" id="stat-kappa-score" style="color: var(--accent-cyan);">κ 0.88</span>
+          <span class="metric-subtext">Substantial Reviewer Agreement</span>
+        </div>
+      </div>
+
+      <!-- Leaderboard Glass Card -->
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>🏆</span> Model Leaderboard & Multi-Dimensional Reasoning Performance
+          </div>
+          <button class="btn-secondary" id="btn-refresh-runs">↻ Refresh</button>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Model Provider</th>
+              <th>Overall Score</th>
+              <th>Factual Accuracy</th>
+              <th>Evidence Grounding</th>
+              <th>Attack-Chain F1</th>
+              <th>95% Bootstrap CI</th>
+              <th>Unsupported Rate</th>
+              <th>Safety Gate</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboard-tbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 2. SCENARIO REGISTRY TAB -->
+    <section class="tab-pane" id="pane-scenarios">
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>🛡️</span> Cybersecurity Scenario Registry
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <select class="form-select" id="filter-category" style="width: 220px;">
+              <option value="">All Categories</option>
+              <option value="attack_chain">Attack-Chain Reasoning</option>
+              <option value="evidence_attribution">Evidence Attribution</option>
+              <option value="threat_modeling">Threat Modeling</option>
+              <option value="vulnerability_analysis">Vulnerability Analysis</option>
+              <option value="incident_reconstruction">Incident Reconstruction</option>
+              <option value="attck_mapping">MITRE ATT&CK Mapping</option>
+              <option value="defensive_recommendations">Defensive Recommendations</option>
+              <option value="uncertainty_handling">Uncertainty Handling</option>
+            </select>
+          </div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Difficulty</th>
+              <th>Evidence Logs</th>
+              <th>Counterfactual</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="scenarios-tbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3. RUN EVALUATION TAB -->
+    <section class="tab-pane" id="pane-evaluation">
+      <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>⚡</span> Configure & Execute Evaluation Run
+          </div>
+        </div>
+
+        <form id="form-run-eval">
+          <div class="form-group">
+            <label class="form-label" for="select-model">Model Provider</label>
+            <select class="form-select" id="select-model" required>
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="input-run-label">Evaluation Run Label</label>
+            <input type="text" class="form-control" id="input-run-label" value="Release-Candidate-Eval" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="input-system-prompt">Forensic System Prompt</label>
+            <textarea class="form-control" id="input-system-prompt" rows="3">You are a principal cybersecurity incident response forensic specialist. Analyze the provided incident narrative and structured evidence logs. Deliver a JSON assessment identifying verified claims, MITRE ATT&CK techniques, critical attack paths, actionable remediations, and explicit uncertainty gaps. Ground every claim strictly in the provided telemetry.</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Scenario Subset</label>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+              Leave blank to evaluate the entire benchmark (32 scenarios), or specify codes.
+            </div>
+            <input type="text" class="form-control" id="input-subset-codes" placeholder="e.g. CE-AC-001A, CE-AC-001B">
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
+            <button type="submit" class="btn-primary" id="btn-submit-eval">
+              <span>▶</span> Execute Benchmark Run
+            </button>
+          </div>
+        </form>
+
+        <div id="eval-progress-container" style="display: none; margin-top: 1.5rem; padding: 1rem; background: rgba(0,0,0,0.4); border-radius: var(--radius-sm);">
+          <div style="display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 0.5rem;">
+            <span id="eval-progress-status">Evaluating scenarios against forensic telemetry...</span>
+            <span id="eval-progress-pct">Running...</span>
+          </div>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" style="width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. CLAIM-TO-EVIDENCE GRAPH (Innovation 1) -->
+    <section class="tab-pane" id="pane-claim-graph">
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>🕸️</span> Claim-to-Evidence Directed Graph Visualizer
+          </div>
+          <div style="display: flex; gap: 0.75rem; align-items: center;">
+            <select class="form-select" id="select-graph-response" style="width: 320px;">
+              <!-- Populated with responses -->
+            </select>
+            <button class="btn-secondary" id="btn-load-graph">Inspect Graph</button>
+          </div>
+        </div>
+
+        <div class="graph-legend">
+          <div class="legend-item"><span class="legend-dot dot-evidence"></span> Evidence Log Node</div>
+          <div class="legend-item"><span class="legend-dot dot-supported"></span> Supported Claim</div>
+          <div class="legend-item"><span class="legend-dot dot-unsupported"></span> Unsupported Inference</div>
+          <div class="legend-item"><span class="legend-dot dot-trap"></span> Forbidden Hallucination Trap</div>
+        </div>
+
+        <div class="graph-canvas-container" id="graph-container">
+          <svg id="claim-graph-svg" width="100%" height="100%"></svg>
+        </div>
+
+        <div id="graph-details-card" style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: var(--radius-sm); font-size: 0.85rem;">
+          <span style="color: var(--text-secondary);">Select or hover over any node above to inspect claim propositions, evidence logs, gaps, and recommended corrections.</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. COUNTERFACTUAL CONSISTENCY LAB (Innovation 2) -->
+    <section class="tab-pane" id="pane-counterfactual">
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>⚖️</span> Counterfactual Sensitivity & Certainty Modulation Lab
+          </div>
+        </div>
+        <p style="color: var(--text-secondary); margin-bottom: 1.5rem; font-size: 0.9rem;">
+          Evaluates models on paired scenarios differing by a single critical atomic fact (e.g. attribution log present vs omitted). 
+          Validates whether models appropriately modulate certainty instead of outputting generic memorized answers.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+          <div class="glass-card" style="background: rgba(10, 15, 25, 0.6);">
+            <h4 style="color: var(--accent-cyan); margin-bottom: 0.5rem;">Scenario A (Baseline: Procdump Completed)</h4>
+            <div style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              CE-AC-001A · Full LSASS memory dump was written to disk.
+            </div>
+            <div class="badge badge-emerald">Model Output: High Certainty Breach</div>
+            <p style="margin-top: 0.75rem; font-size: 0.85rem;">
+              Model correctly asserts: <em>"Attacker dumped LSASS memory via procdump to harvest credentials."</em>
+            </p>
+          </div>
+
+          <div class="glass-card" style="background: rgba(10, 15, 25, 0.6);">
+            <h4 style="color: var(--accent-purple); margin-bottom: 0.5rem;">Scenario B (Variant: Procdump Blocked by EDR)</h4>
+            <div style="font-size: 0.825rem; color: var(--text-secondary); margin-bottom: 1rem;">
+              CE-AC-001B · EDR blocked execution with STATUS_ACCESS_DENIED.
+            </div>
+            <div class="badge badge-cyan" id="cf-test-badge">Pass: Certainty Modulated</div>
+            <p style="margin-top: 0.75rem; font-size: 0.85rem;" id="cf-test-expl">
+              Competent model detects EDR block and adapts: <em>"LSASS access was terminated by EDR; no credentials compromised."</em>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. REGRESSION GATEKEEPER TAB (Innovation 4) -->
+    <section class="tab-pane" id="pane-regression">
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>🚦</span> CI/CD Regression Gatekeeper & Scenario Diff Engine
+          </div>
+          <div style="display: flex; gap: 0.75rem;">
+            <select class="form-select" id="select-reg-candidate" style="width: 250px;">
+              <option value="">Select Candidate Run</option>
+            </select>
+            <select class="form-select" id="select-reg-baseline" style="width: 250px;">
+              <option value="">Select Baseline Run</option>
+            </select>
+            <button class="btn-primary" id="btn-run-gate-check">Enforce Gate</button>
+          </div>
+        </div>
+
+        <div id="gate-verdict-banner" style="display: none; padding: 1.25rem; border-radius: var(--radius-md); margin-bottom: 1.5rem;">
+          <!-- Dynamically populated -->
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>Category</th>
+              <th>Baseline Score</th>
+              <th>Candidate Score</th>
+              <th>Delta</th>
+              <th>Status</th>
+              <th>Diagnostic Reasons</th>
+            </tr>
+          </thead>
+          <tbody id="regression-diffs-tbody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 7. HUMAN REVIEW & ADJUDICATION TAB (Module H & Innovation 3) -->
+    <section class="tab-pane" id="pane-review">
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>👥</span> Human Reviewer Queue & Inter-Rater Agreement (Cohen's Kappa)
+          </div>
+          <div class="badge badge-cyan" id="badge-cohens-kappa">κ 0.88 Substantial</div>
+        </div>
+
+        <div style="margin-bottom: 1.5rem;">
+          <h4 style="font-size: 0.95rem; margin-bottom: 0.5rem;">Double-Blind Review Tasks</h4>
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Task ID</th>
+                <th>Assigned Analyst</th>
+                <th>Response ID</th>
+                <th>Status</th>
+                <th>Double Blind</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="review-tasks-tbody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. BENCHMARK INTEGRITY & LEAKAGE (Innovation 6) -->
+    <section class="tab-pane" id="pane-integrity">
+      <div class="glass-card">
+        <div class="glass-card-header">
+          <div class="glass-card-title">
+            <span>🔒</span> Benchmark Integrity & Cross-Split Leakage Auditor
+          </div>
+          <button class="btn-primary" id="btn-run-leakage-audit">Audit Splits</button>
+        </div>
+
+        <div id="leakage-report-container" style="padding: 1.5rem; background: rgba(0,0,0,0.3); border-radius: var(--radius-md); font-size: 0.9rem;">
+          Click "Audit Splits" to compute Jaccard n-gram similarity across train, validation, and held-out benchmark splits.
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Scenario Detail Modal -->
+  <div class="modal-overlay" id="modal-scenario-detail">
+    <div class="modal-content">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+        <h3 id="modal-scenario-title" style="color: #fff; font-size: 1.25rem;">Scenario</h3>
+        <button class="btn-secondary" id="modal-close-btn">✕</button>
+      </div>
+      <div id="modal-scenario-body" style="font-size: 0.875rem;"></div>
+    </div>
+  </div>
+
+  <script src="/js/claim_graph.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
