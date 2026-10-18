@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = "MIT"
 authors = [
-    { name = "Sri Ram Kunamsetty", email = "mohansriramkunamsetty@gmail.com" }
+    { name = "SriRam Kunamsetty", email = "mohansriramkunamsetty@gmail.com" }
 ]
 dependencies = [
     "fastapi>=0.110.0",
